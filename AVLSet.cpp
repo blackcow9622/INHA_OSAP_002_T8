@@ -42,6 +42,15 @@ struct AVLSet::Node {
     Node* left, * right, * parent;
 };
 
+int AVLSet::BalanceDegree(Node *x) {
+    if (!x) {
+        return 0;
+    }
+    int lh = x->left ? x->left->height : 0;
+    int rh = x->right ? x->right->height : 0;
+    return lh - rh;
+}
+
 void AVLSet::ResizeHs(Node *x) {
     if (!x) {
         return;
