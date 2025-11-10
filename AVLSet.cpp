@@ -61,6 +61,13 @@ void AVLSet::Find(int x) {
     cout << -1 << '\n';
 }
 
+void AVLSet::Empty() {
+    if (n_ == 0)  //set이 비어있으면 1출력
+        cout << 1 << '\n';
+    else  //set이 비어있지 않으면 0출력
+        cout << 0 << '\n';
+}
+
 int main(void) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
