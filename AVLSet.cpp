@@ -42,6 +42,25 @@ struct AVLSet::Node {
     Node* left, * right, * parent;
 };
 
+void AVLSet::Find(int x) {
+    Node *cur_Node = root;
+    int depth = 0;
+
+    while (cur_Node != nullptr) {
+        if (cur_Node -> key == x) {
+            cout << depth * cur_Node->height << '\n';
+            return;
+        }
+        if (cur_Node->key > x)  //왼쪽 자식으로 이동
+            cur_Node = cur_Node->left; 
+        else  //오른쪽 자식으로 이동
+            cur_Node = cur_Node->right;
+        
+        depth++;
+    }
+    cout << -1 << '\n';
+}
+
 int main(void) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
