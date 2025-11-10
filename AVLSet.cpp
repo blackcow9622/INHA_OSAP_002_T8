@@ -65,6 +65,21 @@ void AVLSet::ResizeHs(Node *x) {
 }
 
 
+
+AVLSet::Node *AVLSet::FindNode(int x) {
+    Node *cur_Node = root;
+    while (cur_Node != nullptr) {
+        if (cur_Node->key == x) {
+            return cur_Node;
+        }
+        if (cur_Node->key > x) { // move to left_child
+            cur_Node = cur_Node->left;
+        } else { // move to right_child
+            cur_Node = cur_Node->right;
+        }
+    }
+    return nullptr;
+}
 int main(void) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
