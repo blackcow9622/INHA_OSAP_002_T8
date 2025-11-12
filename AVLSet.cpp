@@ -68,6 +68,9 @@ void AVLSet::Empty() {
         cout << 0 << '\n';
 }
 
+void AVLSet::Size() {
+    cout << n_ << '\n';
+}
 int main(void) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
