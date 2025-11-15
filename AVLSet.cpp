@@ -64,7 +64,99 @@ void AVLSet::ResizeHs(Node *x) {
     x->size = 1 + ls + rs;
 }
 
+AVLSet::Node *AVLSet::RotateLeft(Node *x) {
+    if (!x || !x->right) {
+        return x;
+    }
+    Node *y = x->right;
+    Node *B = y->left;
 
+    // x, y, B 재배치
+    y->left = x;
+    x->right = B;
+
+    // parent 갱신
+    y->parent = x->parent;
+    if (B) {
+        B->parent = x;
+    }
+    x->parent = y;
+
+    // x가 x의 부모의 어디에서 왔는지에 따른 재배치
+    if (!y->parent)
+        root = y;
+    else if (y->parent->left == x) {
+        y->parent->left = y;
+    } else {
+        y->parent->right = y;
+    }
+
+    ResizeHs(x);
+    ResizeHs(y);
+
+    return y;
+}
+
+AVLSet::Node *AVLSet::RotateRight(Node *y) {
+    if (!y || !y->left) {
+        return y;
+    }
+    Node *x = y->left;
+    Node *B = x->right;
+
+    x->right = y;
+    y->left = B;
+
+    x->parent = y->parent;
+    if (B)
+        B->parent = y;
+    y->parent = x;
+
+    if (!x->parent)
+        root = x;
+    else if (x->parent->left == y) {
+        x->parent->left = x;
+    } else {
+        x->parent->right = x;
+    }
+
+    ResizeHs(y);
+    ResizeHs(x);
+
+    return x;
+}
+
+void AVLSet::ReBalance(Node* start) {
+    Node* cur = start;
+
+    while (cur) {
+        // 현재 노드의 height, size 재측정
+        ResizeHs(cur);
+
+        int balance = BalanceDegree(cur);
+
+        // 왼쪽으로 기움 : LL or LR
+        if (balance == 2) {
+            // LR: 왼쪽 자식을 먼저 좌회전
+            if (BalanceDegree(cur->left) < 0)
+                RotateLeft(cur->left);
+
+            RotateRight(cur);
+        }
+
+        // 오른쪽으로 기움 : RR or RL
+        else if (balance == -2) {
+            // RL: 오른쪽 자식을 먼저 우회전
+            if (BalanceDegree(cur->right) > 0)
+                RotateRight(cur->right);
+
+            RotateLeft(cur);
+        }
+
+        // 부모로 올라가서 체크
+        cur = cur->parent;
+    }
+}
 
 AVLSet::Node *AVLSet::FindNode(int x) {
     Node *cur_Node = root;
@@ -80,6 +172,40 @@ AVLSet::Node *AVLSet::FindNode(int x) {
     }
     return nullptr;
 }
+
+void AVLSet::UpperBound(int x) {
+    Node *cur = root;
+    Node *result_node = nullptr;
+
+    while (cur) {
+        if (cur->key > x) {
+            result_node = cur;
+            cur = cur->left;
+        } else {
+            cur = cur->right;
+        }
+    }
+
+    if (!result_node) {
+        cout << -1 << '\n';
+        return;
+    }
+
+    int depth = 0;
+
+    Node* t = result_node;
+    while (t != nullptr) {
+        if (t->parent != nullptr) {
+            depth++;
+            t = t->parent;
+        } else {
+            break;
+        }
+    }
+
+    cout << result_node->key << ' ' << depth * result_node->height << '\n';
+}
+
 int main(void) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
