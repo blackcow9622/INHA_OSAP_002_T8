@@ -64,6 +64,68 @@ void AVLSet::ResizeHs(Node *x) {
     x->size = 1 + ls + rs;
 }
 
+AVLSet::Node *AVLSet::RotateLeft(Node *x) {
+    if (!x || !x->right) {
+        return x;
+    }
+    Node *y = x->right;
+    Node *B = y->left;
+
+    // x, y, B 재배치
+    y->left = x;
+    x->right = B;
+
+    // parent 갱신
+    y->parent = x->parent;
+    if (B) {
+        B->parent = x;
+    }
+    x->parent = y;
+
+    // x가 x의 부모의 어디에서 왔는지에 따른 재배치
+    if (!y->parent)
+        root = y;
+    else if (y->parent->left == x) {
+        y->parent->left = y;
+    } else {
+        y->parent->right = y;
+    }
+
+    ResizeHs(x);
+    ResizeHs(y);
+
+    return y;
+}
+
+AVLSet::Node *AVLSet::RotateRight(Node *y) {
+    if (!y || !y->left) {
+        return y;
+    }
+    Node *x = y->left;
+    Node *B = x->right;
+
+    x->right = y;
+    y->left = B;
+
+    x->parent = y->parent;
+    if (B)
+        B->parent = y;
+    y->parent = x;
+
+    if (!x->parent)
+        root = x;
+    else if (x->parent->left == y) {
+        x->parent->left = x;
+    } else {
+        x->parent->right = x;
+    }
+
+    ResizeHs(y);
+    ResizeHs(x);
+
+    return x;
+}
+
 AVLSet::Node *AVLSet::FindNode(int x) {
     Node *cur_Node = root;
     while (cur_Node != nullptr) {
