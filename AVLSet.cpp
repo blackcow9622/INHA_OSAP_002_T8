@@ -1,3 +1,8 @@
+// MIT License
+// Copyright (c) 2025 blackcow9622
+// Licensed under the MIT License. See LICENSE file in the project root for details.
+// 작성자 : 조현우, 작성일 : 2025.11.16
+
 #include <iostream>
 using namespace std;
 
@@ -63,6 +68,7 @@ void AVLSet::ResizeHs(Node *x) {
     int rs = x->right ? x->right->size : 0;   // x의 오른쪽 자식 사이즈
     x->size = 1 + ls + rs;
 }
+
 
 AVLSet::Node *AVLSet::RotateLeft(Node *x) {
     if (!x || !x->right) {
@@ -394,7 +400,6 @@ void AVLSet::Erase(int x) {
         return;
     }
 
-
     int depth = 0;
     for (Node* t = node; (t != nullptr && t->parent != nullptr); t = t->parent)
         depth++;
@@ -436,9 +441,6 @@ void AVLSet::Erase(int x) {
         --n_;
         ReBalance(parent);
     }
-
-
-
 }
 
 int main(void) {
