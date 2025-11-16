@@ -220,7 +220,7 @@ void AVLSet::Insert(int x) {
     Node* cur_node = root;
 
     while (cur_node != nullptr) {
-        p-node = cur_node;
+        p_node = cur_node;
 
         if (cur_node->key > x) { // 왼쪽 자식으로 이동
             cur_node = cur_node->left;
@@ -287,10 +287,11 @@ void AVLSet::Prev(int x) {
 
     // key값과 깊이 * 높이를 공백으로 구분하여 출력
     int depth = 0;
-    for (Node* t = y_node; t && t->parent; t->parent) {
+    for (Node* t = y_node; t && t->parent; t = t->parent) {
         depth++;
     }
     cout << y_node->key << ' ' << depth * y_node->height << '\n';
+}
 
 void AVLSet::Next(int x) {
     Node* x_node = FindNode(x);
