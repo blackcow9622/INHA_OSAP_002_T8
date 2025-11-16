@@ -206,6 +206,91 @@ void AVLSet::Size() {
     cout << n_ << '\n';
 }
 
+void AVLSet::Insert(int x) {
+    Node* new_node = new Node(x);
+
+    if (root == nullptr) { // 빈 트리일 경우
+        root = new_node;
+        ++n_;
+        cout << 0 << '\n';
+        return;
+    }
+
+    Node* p_node = nullptr;
+    Node* cur_node = root;
+
+    while (cur_node != nullptr) {
+        p-node = cur_node;
+
+        if (cur_node->key > x) { // 왼쪽 자식으로 이동
+            cur_node = cur_node->left;
+        }
+        else { // 오른쪽 자식으로 이동
+            cur_node = cur_node->right;
+        }
+    }
+
+    new_node->parent = p_node;
+    if (p_node->key > x) {
+        p_node->left = new_node;
+    }
+    else {
+        p_node->right = new_node;
+    }
+
+    ++n_;
+
+    // 삽입 후 재정렬
+    ReBalance(p_node);
+
+    // 깊이 * 높이 출력
+    Node* result_node = root;
+    int depth = 0;
+    while (result_node != nullptr && result_node->key != x) {
+        if (result_node->key > x) {
+            result_node = result_node->left;
+        }
+        else {
+            result_node = result_node->right;
+        }
+        depth++;
+    }
+
+    cout << depth * result_node->height << '\n';
+}
+
+void AVLSet::Prev(int x) {
+    Node* x_node = FindNode(x);
+    Node* y_node = nullptr;
+
+    if (x_node->left) { // 왼쪽 자식이 있는 경우
+        y_node = x_node->left;
+        while (y_node->right) {
+            y_node = y_node->right;
+        }
+    }
+    else { // 왼쪽 자식이 없는 경우
+        Node* cur_node = x_node;
+        Node* p_node = cur_node->parent;
+        while (p_node && p_node->left == cur_node) {
+            cur_node = p_node;
+            p_node = p_node->parent;
+        }
+        y_node = p_node;
+    }
+
+    if (y_node == nullptr) {
+        cout << -1 << '\n';
+        return;
+    }
+
+    int depth = 0;
+    for (Node* t = y_node; t && t->parent; t->parent) {
+        depth++;
+    }
+    cout << y_node->key << ' ' << depth * y_node->height << '\n';
+
+
 void AVLSet::UpperBound(int x) {
     Node *cur = root;
     Node *result_node = nullptr;
