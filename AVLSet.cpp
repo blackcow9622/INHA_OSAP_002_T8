@@ -421,26 +421,26 @@ void AvlSet::Erase(int x) {
     }
 
     // 그 외의 경우(자식이 0개 또는 1개) (Case 1을 거치면 delete_target은 항상 이 상태가 됨)
-    Node* childnode = (delete_target->left != nullptr) ? delete_target->left : delete_target->right;
-    Node* parentnode = delete_target->parent;
+    Node* child_node = (delete_target->left != nullptr) ? delete_target->left : delete_target->right;
+    Node* parent_node = delete_target->parent;
 
     //삭제할 노드의 자식과 부모를 서로 연결
-    if (childnode != nullptr) {
-        childnode->parent = parentnode;
+    if (child_node != nullptr) {
+        child_node->parent = parent_node;
     }
-    if (parentnode == nullptr) {
-        root_ = childnode; 
-    } else if (parentnode->left == delete_target) {
-        parentnode->left = childnode;
+    if (parent_node == nullptr) {
+        root_ = child_node; 
+    } else if (parent_node->left == delete_target) {
+        parent_node->left = child_node;
     } else {
-        parentnode->right = childnode;
+        parent_node->right = child_node;
     }
 
     delete delete_target;
     n_--;
 
-    if (parentnode != nullptr) {
-        ReBalance(parentnode); //균형 재조정
+    if (parent_node != nullptr) {
+        ReBalance(parent_node); //균형 재조정
     }
 }
 
